@@ -39,11 +39,14 @@
             <el-tag
               :key="item.prop"
               :type="
-                item.payload.type || scope.row[item.prop] | elTagTypeFilter
+                filterFn(
+                  'elTagTypeFilter',
+                  item.payload.type || scope.row[item.prop]
+                )
               "
-              :effect="item.payload.effect"
+              :effect="item.payload.effect || 'light'"
             >
-              {{ scope.row[item.prop] | cateFilter }}
+              {{ filterFn(item.payload.filterName, scope.row[item.prop]) }}
             </el-tag>
           </template>
 
@@ -71,6 +74,7 @@
               v-for="(btnItem, btnIndex) in item.payload"
               :key="btnIndex"
               :type="btnItem.type"
+              :icon="btnItem.icon"
               @click="btnItem.click(scope.row)"
             >
               {{ btnItem.name }}
@@ -83,6 +87,7 @@
 </template>
 
 <script>
+import Vue from "vue"
 export default {
   props: {
     rowKey: { required: false, type: String },
@@ -90,7 +95,11 @@ export default {
     /* prop,label */
     columns: { required: true, type: Array }
   },
-  methods: {}
+  methods: {
+    filterFn(filterName, ...params) {
+      return Vue.filter(filterName)(...params)
+    }
+  }
 }
 </script>
 

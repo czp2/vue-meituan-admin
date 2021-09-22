@@ -41,7 +41,8 @@ export default {
           type: "tags",
           payload: {
             type: "success",
-            effect: "dark"
+            effect: "dark",
+            filterName: "cateFilter"
           }
         }
       ]

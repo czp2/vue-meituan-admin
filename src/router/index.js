@@ -17,6 +17,8 @@ import StoresCreate from "../views/stores/Create.vue"
 import GoodsList from "../views/goods/Index.vue"
 import GoodsCreate from "../views/goods/Create.vue"
 
+import OrdersList from "../views/orders/Index.vue"
+
 const routes = [
   {
     path: "/",
@@ -36,7 +38,9 @@ const routes = [
       { path: "/stores/create", component: StoresCreate },
 
       { path: "/goods/list", alias: "/goods", component: GoodsList },
-      { path: "/goods/create", component: GoodsCreate }
+      { path: "/goods/create", component: GoodsCreate },
+
+      { path: "/orders/list", alias: "/orders", component: OrdersList }
     ]
   }
 ]

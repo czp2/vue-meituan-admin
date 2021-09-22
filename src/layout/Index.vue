@@ -12,17 +12,17 @@
 </template>
 
 <script>
-import { Menu, Top } from "./components";
+import { Menu, Top } from "./components"
 export default {
   components: {
     Menu,
-    Top,
+    Top
   },
   data() {
-    return {};
+    return {}
   },
-  methods: {},
-};
+  methods: {}
+}
 </script>
 
 <style lang="scss" scoped>
