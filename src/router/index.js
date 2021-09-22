@@ -1,36 +1,50 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from "vue"
+import VueRouter from "vue-router"
+Vue.use(VueRouter)
 
-Vue.use(VueRouter);
+import Index from "../layout/Index.vue"
+import Welcome from "../views/Welcome.vue"
+import Test from "../views/Test.vue"
+
+import UsersHistory from "../views/users/History.vue"
+import UsersList from "../views/users/Index.vue"
+import UsersCreate from "../views/users/Create.vue"
+
+import CatesList from "../views/cates/Index.vue"
+import StoresList from "../views/stores/Index.vue"
+import StoresCreate from "../views/stores/Create.vue"
+
+import GoodsList from "../views/goods/Index.vue"
+import GoodsCreate from "../views/goods/Create.vue"
 
 const routes = [
   {
     path: "/",
     name: "Index",
-    component: () => import("../layout/Index.vue"),
+    component: Index,
     children: [
-      {
-        path: "welcome",
-        alias: "/",
-        component: () => import("../views/Welcome.vue"),
-      },
-      {
-        path: "/users/history",
-        component: () => import("../views/users/History.vue"),
-      },
-      {
-        path: "/users/list",
-        alias: "/users",
-        component: () => import("../views/users/Index.vue"),
-      },
-    ],
-  },
-];
+      { path: "welcome", alias: "/", component: Welcome },
+      { path: "test", alias: "/test", component: Test },
+
+      { path: "/users/history", component: UsersHistory },
+      { path: "/users/list", alias: "/users", component: UsersList },
+      { path: "/users/create", component: UsersCreate },
+
+      { path: "/cates/list", alias: "/cates", component: CatesList },
+
+      { path: "/stores/list", alias: "/stores", component: StoresList },
+      { path: "/stores/create", component: StoresCreate },
+
+      { path: "/goods/list", alias: "/goods", component: GoodsList },
+      { path: "/goods/create", component: GoodsCreate }
+    ]
+  }
+]
 
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
-  routes,
-});
+  routes
+})
 
-export default router;
+export default router

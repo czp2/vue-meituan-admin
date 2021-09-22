@@ -12,30 +12,39 @@
       :collapse="isCollapse"
       :collapse-transition="false"
     >
-      <el-sub-menu index="1">
+      <el-submenu index="1">
         <template #title>
           <i class="iconfont icon-caidan"></i>
           <span>后台首页</span>
         </template>
-        <el-menu-item index="1-1"
+        <el-menu-item index="1-1" @click="$router.push('/welcome')"
           ><i class="iconfont icon-gongneng"></i>欢迎页</el-menu-item
         >
-        <el-menu-item index="1-2"
+        <el-menu-item index="1-2" @click="$router.push('/users/history')"
           ><i class="iconfont icon-gongneng"></i>访客记录</el-menu-item
         >
-      </el-sub-menu>
-      <el-sub-menu index="2">
+      </el-submenu>
+      <el-submenu index="2">
         <template #title>
           <i class="iconfont icon-caidan"></i>
-          <span>后台首页</span>
+          <span>用户管理</span>
         </template>
-        <el-menu-item index="2-1"
-          ><i class="iconfont icon-gongneng"></i>选项3</el-menu-item
+        <el-menu-item index="2-1" @click="$router.push('/users')"
+          ><i class="iconfont icon-gongneng"></i>用户列表</el-menu-item
         >
-        <el-menu-item index="2-2"
-          ><i class="iconfont icon-gongneng"></i>选项4</el-menu-item
+        <el-menu-item index="2-2" @click="$router.push('/users/create')"
+          ><i class="iconfont icon-gongneng"></i>创建用户</el-menu-item
         >
-      </el-sub-menu>
+      </el-submenu>
+      <el-submenu index="3">
+        <template #title>
+          <i class="iconfont icon-caidan"></i>
+          <span>分类管理</span>
+        </template>
+        <el-menu-item index="2-1" @click="$router.push('/cates')"
+          ><i class="iconfont icon-gongneng"></i>分类列表</el-menu-item
+        >
+      </el-submenu>
     </el-menu>
   </div>
 </template>
@@ -47,17 +56,17 @@ export default {
       isCollapse: false,
       menuWidth: "200px",
       menuIcon: "el-icon-s-fold"
-    };
+    }
   },
   methods: {
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+      console.log(key, keyPath)
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+      console.log(key, keyPath)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

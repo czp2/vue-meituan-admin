@@ -1,7 +1,7 @@
 <template>
   <div id="top">
     <div class="left">
-      <div class="btn" @click="menuIconFn"><i :class="menuIcon"></i></div>
+      <div class="btn"><i :class="menuIcon"></i></div>
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>活动管理</el-breadcrumb-item>
@@ -23,7 +23,7 @@ export default {
       isCollapse: false,
       menuWidth: "200px",
       menuIcon: "el-icon-s-fold"
-    };
+    }
   },
   methods: {
     // menuIconFn() {
@@ -32,7 +32,7 @@ export default {
     //   this.menuWidth = this.isCollapse ? "64px" : "200px";
     // }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -44,7 +44,6 @@ export default {
   justify-content: space-between;
 
   .left {
-    width: 25%;
     height: 100%;
     display: flex;
     justify-content: space-around;
@@ -64,13 +63,15 @@ export default {
     }
   }
   .right {
-    width: 20%;
     height: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
     i {
       font-size: 24px;
+    }
+    :nth-child(n) {
+      margin-right: 20px;
     }
   }
 }

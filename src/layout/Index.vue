@@ -16,12 +16,12 @@ import { Menu, Top } from "./components";
 export default {
   components: {
     Menu,
-    Top
+    Top,
   },
   data() {
     return {};
   },
-  methods: {}
+  methods: {},
 };
 </script>
 
