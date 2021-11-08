@@ -1,13 +1,10 @@
 <template>
-  <czp-form width="100%" :formConfig="formConfig"></czp-form>
+  <czp-form width="60%" :formConfig="formConfig"></czp-form>
 </template>
 
 <script>
-// 标题、所属分类、所属地区、封面60x60、相册
-// 商家特色筛选
-// 人均价筛选
-// 优惠活动筛选
-// 起送、夜间配送、人均、电话☎️、营业时间、地址（腾讯地图定位获取）
+import { getCatesApi } from "@/api/cates"
+import { getAreasApi } from "@/api/areas"
 
 export default {
   data() {
@@ -16,34 +13,16 @@ export default {
       formConfig: [
         {
           label: "所属分类",
-          field: "cate_id",
+          field: "cat_id",
           type: "cascader",
           payload: {
             change: (val) => console.log("所属分类", val),
-            options: [
-              {
-                value: "zhinan",
-                label: "指南",
-                children: [
-                  {
-                    value: "shejiyuanze",
-                    label: "设计原则",
-                    children: [
-                      {
-                        value: "yizhi",
-                        label: "一致"
-                      },
-                      {
-                        value: "kekong",
-                        label: "可控"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
+            props: { label: "cat_name", value: "cat_id" },
+            options: []
           },
-          rules: [{ required: true, message: "所属分类必须", trigger: "blur" }]
+          rules: [
+            { required: true, message: "所属分类必须", trigger: "change" }
+          ]
         },
         {
           label: "所属地区",
@@ -51,65 +30,66 @@ export default {
           type: "cascader",
           payload: {
             change: (val) => console.log("所属地区", val),
-            options: [
-              {
-                value: "zhinan",
-                label: "指南",
-                children: [
-                  {
-                    value: "shejiyuanze",
-                    label: "设计原则",
-                    children: [
-                      {
-                        value: "yizhi",
-                        label: "一致"
-                      },
-                      {
-                        value: "kekong",
-                        label: "可控"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
+            props: { label: "area_name", value: "area_id" },
+            options: []
           },
-          rules: [{ required: true, message: "所属地区必须", trigger: "blur" }]
+          rules: [
+            { required: true, message: "所属地区必须", trigger: "change" }
+          ]
         },
         {
           label: "商家特色",
-          field: "filter3",
+          field: "sjts",
           type: "select",
           payload: [
-            { label: "特色1", value: "特色1" },
-            { label: "特色2", value: "特色2" },
-            { label: "特色3", value: "特色3" }
+            { label: "全部", value: "" },
+            { label: "免费配送", value: "免费配送" },
+            { label: "新商家", value: "新商家" },
+            { label: "品牌商家", value: "品牌商家" },
+            { label: "支持开票", value: "支持开票" }
           ],
-          rules: [{ required: true, message: "商家特色必须", trigger: "blur" }]
+          rules: []
         },
         {
           label: "人均价",
-          field: "filter1",
+          field: "rjj",
           type: "select",
           payload: [
-            { label: "特色1", value: "特色1" },
-            { label: "特色2", value: "特色2" },
-            { label: "特色3", value: "特色3" }
+            { label: "全部", value: "" },
+            { label: "20元以下", value: "20元以下" },
+            { label: "20~40元", value: "20~40元" },
+            { label: "40元以上", value: "40元以上" }
           ],
-          rules: [{ required: true, message: "人均价必须", trigger: "blur" }]
+          rules: []
         },
         {
           label: "优惠活动",
-          field: "filter2",
+          field: "yhhd",
           type: "select",
           payload: [
-            { label: "特色1", value: "特色1" },
-            { label: "特色2", value: "特色2" },
-            { label: "特色3", value: "特色3" }
+            { label: "全部", value: "" },
+            { label: "优惠商家", value: "优惠商家" },
+            { label: "折扣商品", value: "折扣商品" },
+            { label: "买赠活动", value: "买赠活动" }
           ],
-          rules: [{ required: true, message: "优惠活动必须", trigger: "blur" }]
+          rules: []
         }
       ]
+    }
+  },
+  created() {
+    this.getCascaderData()
+  },
+  methods: {
+    getCascaderData() {
+      getCatesApi({ pagesize: 1000 }).then((res) => {
+        console.log(res.data.list)
+        this.formConfig[0].payload.options = res.data.list
+      })
+      getAreasApi({ pagesize: 1000 }).then((res) => {
+        console.log(res.data)
+        this.formConfig[1].payload.options = res.data
+      })
     }
   }
 }

@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { postUsersApi } from "@/api/users"
 export default {
   data() {
     return {
@@ -18,10 +19,12 @@ export default {
           label: "账号",
           field: "username",
           type: "text",
-          rules: [
-            { required: true, message: "不能为空", trigger: "blur" },
-            { min: 3, max: 6, message: "长度在 3 到 6 个字符", trigger: "blur" }
-          ]
+          rules: [{ required: true, message: "不能为空", trigger: "blur" }]
+        },
+        {
+          label: "手机号",
+          field: "mobile",
+          type: "text"
         },
         {
           label: "密码",
@@ -50,7 +53,7 @@ export default {
         },
         {
           label: "密保答案",
-          field: "anwser",
+          field: "answer",
           type: "text",
           rules: [{ required: true, message: "不能为空", trigger: "blur" }]
         }
@@ -63,7 +66,9 @@ export default {
   },
   methods: {
     getFormDataFn(data) {
-      console.log(data)
+      postUsersApi(data).then((res) => {
+        this.createNotify(res, 201)
+      })
     }
   }
 }

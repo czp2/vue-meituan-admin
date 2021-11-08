@@ -2,12 +2,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
 }
 
-
+.el-form-item__content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 .el-select{
-    width: auto;
+    width: 100%;
+}
+
+.el-cascader {
+    width: 100%;
 }
 
 // .el-button{
@@ -15,23 +24,21 @@
 // }
 
 .el-card {
-
     position: relative;
-
     .card-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-    .el-card__body{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
+    // .el-card__body{
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: center;
+    //     align-items: center;
+    // }
     .avatar-uploader {
         position: absolute;
-        top: 28%;
+        top: 25%;
         left: 57%;
 
         .el-upload {

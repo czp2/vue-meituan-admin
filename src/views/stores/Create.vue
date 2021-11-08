@@ -24,6 +24,8 @@ import CreateBase from "./components/create/Base.vue"
 import CreateFilter from "./components/create/Filter.vue"
 import CreateImgs from "./components/create/Imgs.vue"
 import CreateMap from "./components/create/Map.vue"
+
+import { postStoresApi } from "@/api/stores"
 export default {
   components: {
     CreateBase,
@@ -38,14 +40,38 @@ export default {
   },
   methods: {
     submitFn() {
-      //   console.log(this.$refs.base.$children[0]),, "imgs", "map"
-      let arr = ["base", "filter"]
-      arr.forEach((item) => {
-        this.$refs[item].$children[0].$children[0].validate((valid) => {
-          if (valid) {
-            console.log(console.log(this.$refs.base.$children[0]).formData)
-          }
-        })
+      this.$refs.base.$children[0].$children[0].validate((valid) => {
+        if (valid) {
+          let baseData = this.$refs.base.$children[0].$data.formData
+          baseData.img = this.$refs.base.$data.imgData
+
+          this.$refs.filter.$children[0].$children[0].validate((valid) => {
+            if (valid) {
+              let filterData = this.$refs.filter.$children[0].$data.formData
+              let imgsData = this.$refs.imgs.$data.imgs
+              let mapData = this.$refs.map.$data.location
+              let address = this.$refs.map.$data.address
+
+              let postData = {
+                ...baseData,
+                cat_id: filterData.cat_id[filterData.cat_id.length - 1],
+                area_id: filterData.area_id[filterData.area_id.length - 1],
+                sjts: filterData.sjts,
+                rjj: filterData.rjj,
+                yhhd: filterData.yhhd,
+                imgs: imgsData.join(","),
+                lat: mapData.lat,
+                lng: mapData.lng,
+                address
+              }
+
+              console.log("postData", postData)
+              postStoresApi(postData).then((res) => {
+                this.createNotify(res, 201)
+              })
+            }
+          })
+        }
       })
     }
   }

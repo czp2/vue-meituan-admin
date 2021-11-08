@@ -30,7 +30,9 @@
               v-model="scope.row[item.prop]"
               active-color="#ff4949"
               inactive-color="#13ce66"
-              @change="item.change(scope.row.state)"
+              active-value="0"
+              inactive-value="1"
+              @change="item.change(scope.row)"
             ></el-switch>
           </template>
 
@@ -52,7 +54,11 @@
 
           <!-- img -->
           <template v-else-if="item.type === 'img'">
-            <img :src="scope.row[item.prop]" alt="img" />
+            <img
+              width="50px"
+              :src="'http://tmp00001.zhaodashen.cn/' + scope.row[item.prop]"
+              alt="img"
+            />
           </template>
 
           <!-- tips -->
@@ -77,7 +83,7 @@
               :icon="btnItem.icon"
               @click="btnItem.click(scope.row)"
             >
-              {{ btnItem.name }}
+              {{ btnItem.icon ? "" : btnItem.name }}
             </el-button>
           </template>
         </template>
@@ -90,7 +96,7 @@
 import Vue from "vue"
 export default {
   props: {
-    rowKey: { required: false, type: String },
+    rowKey: { required: false, type: String, default: "cat_id" },
     tableData: { required: true, type: Array },
     /* prop,label */
     columns: { required: true, type: Array }

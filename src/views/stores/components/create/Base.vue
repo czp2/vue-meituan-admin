@@ -4,7 +4,7 @@
 
     <el-upload
       class="avatar-uploader"
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action="http://kg.zhaodashen.cn/mt/admin/upload.jsp"
       :show-file-list="false"
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload"
@@ -20,60 +20,49 @@ export default {
   data() {
     return {
       imageUrl: "",
+      imgData: "",
       formConfig: [
         {
           label: "标题",
           field: "title",
           type: "text",
-          rules: [{ required: true, message: "标题必须", trigger: "blur" }],
-          payload: {
-            width: "500px"
-          }
+          width: "500px",
+          rules: [{ required: true, message: "标题必须", trigger: "blur" }]
         },
         {
           label: "起送",
           field: "start_price",
           type: "text",
           rules: [{ required: true, message: "起送必须", trigger: "blur" }],
-          payload: {
-            width: "300px"
-          }
+          width: "300px"
         },
         {
           label: "夜间配送",
           field: "send_price",
           type: "text",
           rules: [{ required: true, message: "夜间配送", trigger: "blur" }],
-          payload: {
-            width: "300px"
-          }
+          width: "300px"
         },
         {
           label: "人均",
           field: "avg_price",
           type: "text",
           rules: [{ required: true, message: "人均必须", trigger: "blur" }],
-          payload: {
-            width: "300px"
-          }
+          width: "300px"
         },
         {
           label: "电话",
-          field: "mobile",
+          field: "tel",
           type: "text",
           rules: [{ required: true, message: "电话必须", trigger: "blur" }],
-          payload: {
-            width: "300px"
-          }
+          width: "300px"
         },
         {
           label: "营业时间",
-          field: "work",
+          field: "work_time",
           type: "text",
           rules: [{ required: true, message: "营业时间必须", trigger: "blur" }],
-          payload: {
-            width: "300px"
-          }
+          width: "300px"
         }
       ]
     }
@@ -81,6 +70,10 @@ export default {
   methods: {
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw)
+      console.log(res)
+      if (res.meta.state == 201) {
+        this.imgData = res.data.img
+      }
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg"

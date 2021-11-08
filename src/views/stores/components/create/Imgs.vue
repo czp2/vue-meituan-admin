@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-upload
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action="http://kg.zhaodashen.cn/mt/admin/upload.jsp"
       list-type="picture-card"
-      :on-preview="handlePictureCardPreview"
       :on-remove="handleRemove"
+      :on-success="handleAvatarSuccess"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
@@ -19,17 +19,32 @@ export default {
   data() {
     return {
       dialogImageUrl: "",
-      dialogVisible: false
+      dialogVisible: false,
+      imgs: []
     }
   },
   methods: {
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw)
+      console.log(res)
+      if (res.meta.state == 201) {
+        this.imgs.push(res.data.img)
+        console.log(this.imgs)
+      } else {
+        this.$message.error(res.meta.msg)
+      }
     },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
+    handleRemove(file, fileList) {
+      // console.log(file, fileList)
+      this.imgs = fileList.map((item) => {
+        return item.response.data.img
+      })
+      console.log(this.imgs)
     }
+    // handlePictureCardPreview(file) {
+    //   this.dialogImageUrl = file.url
+    //   this.dialogVisible = true
+    // }
   }
 }
 </script>

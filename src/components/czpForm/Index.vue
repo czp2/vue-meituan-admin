@@ -5,6 +5,7 @@
       :model="formData"
       :label-width="labelWidth"
       :style="{ width: width }"
+      :size="size"
     >
       <!-- 表单选项 -->
       <el-form-item
@@ -12,26 +13,28 @@
         :prop="item.field"
         :key="index"
         :label="item.label"
-        :label-width="item.width"
+        :label-width="item.labelWidth || labelWidth"
         :rules="item.rules"
-        :style="{ width: item.payload ? item.payload.width : '100%' }"
-        size="mini"
+        :style="{ width: item.width ? item.width : '100%' }"
+        :size="size"
       >
         <!-- 普通文本框 -->
         <el-input
-          v-model="formData[item.field]"
           v-if="item.type === 'text'"
-          :disabled="item.disabled"
-          placeholder="请输入"
+          v-model="formData[item.field]"
+          :disabled="Boolean(item.disabled)"
+          :placeholder="item.placeholder"
+          :prefix-icon="item.icon"
           clearable
         >
         </el-input>
 
         <!-- 密码框 -->
         <el-input
-          v-model="formData[item.field]"
-          placeholder="请输入"
           v-else-if="item.type === 'password'"
+          v-model="formData[item.field]"
+          :placeholder="item.placeholder"
+          :prefix-icon="item.icon"
           clearable
           show-password
         >
@@ -40,16 +43,19 @@
         <!-- 级联选择器 -->
         <el-cascader
           v-else-if="item.type === 'cascader'"
+          v-model="formData[item.field]"
           :options="item.payload.options"
-          :props="formData[item.field]"
+          :props="item.payload.props || { label: 'label' }"
           @change="item.payload.change"
+          change-on-select
         ></el-cascader>
 
         <!-- 选择器 -->
         <el-select
           v-else-if="item.type === 'select'"
           v-model="formData[item.field]"
-          placeholder="请选择"
+          :placeholder="item.placeholder"
+          :disabled="Boolean(item.disabled)"
         >
           <el-option
             v-for="optionItem in item.payload"
@@ -62,19 +68,18 @@
       </el-form-item>
 
       <!-- 表单按钮 -->
-      <el-form-item
-        v-if="formBtns && formBtns.length"
-        style="text-align: center"
-        label-width="0"
-      >
+      <el-form-item v-if="formBtns && formBtns.length" label-width="0">
         <el-button
-          size="mini"
           v-for="(btnItem, index) in formBtns"
+          :size="size"
           :key="index"
           :type="btnItem.type"
-          @click="btnFn(btnItem.content)"
-          >{{ btnItem.content }}</el-button
+          :icon="btnItem.icon"
+          :style="{ width: btnItem.width }"
+          @click="btnFn(btnItem.content, btnItem.icon)"
         >
+          {{ btnItem.icon ? "" : btnItem.content }}
+        </el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -88,9 +93,10 @@ export default {
     // formBtns:[{content,type}]
     labelWidth: { type: String, default: "80px" },
     width: { type: String, default: "80%" },
+    size: { type: String, default: "mini" },
     formConfig: { require: true, type: Array },
     formBtns: { require: false, type: Array },
-    formData: {
+    row: {
       require: false,
       default: function () {
         return {}
@@ -99,28 +105,37 @@ export default {
   },
   data() {
     return {
-      // formData: {}
+      formData: this.row
     }
   },
   methods: {
-    btnFn(content) {
-      switch (content) {
-        case "重置":
-          this.$refs["form"].resetFields()
-          break
-        case "提交":
-          console.log(1)
+    btnFn(content, icon) {
+      if (!content) {
+        this.$emit("click", icon)
+        return
+      } else {
+        if (content === "重置") this.$refs["form"].resetFields()
+        else if (
+          content === "提交" ||
+          content === "创建" ||
+          content === "登录"
+        ) {
           this.$refs["form"].validate((valid) => {
-            console.log(2)
             if (valid) {
-              console.log(3)
               this.$emit("submit", this.formData)
             } else {
               console.log("error submit!!")
               return false
             }
           })
-          break
+        }
+      }
+    }
+  },
+  watch: {
+    row: {
+      handler(newData) {
+        this.formData = newData
       }
     }
   }

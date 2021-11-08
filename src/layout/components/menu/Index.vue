@@ -12,51 +12,43 @@
       :collapse="isCollapse"
       :collapse-transition="false"
     >
-      <el-submenu index="1">
+      <el-submenu
+        v-for="item in menu"
+        :key="item.auth_id"
+        :index="item.auth_id"
+      >
         <template #title>
           <i class="iconfont icon-caidan"></i>
-          <span>后台首页</span>
+          <span>{{ item.auth_name }}</span>
         </template>
-        <el-menu-item index="1-1" @click="$router.push('/welcome')"
-          ><i class="iconfont icon-gongneng"></i>欢迎页</el-menu-item
+        <el-menu-item
+          v-for="sonItem in item.children"
+          :key="sonItem.auth_id"
+          :index="item.auth_id + '-' + sonItem.auth_id"
+          @click="$router.push(sonItem.url)"
         >
-        <el-menu-item index="1-2" @click="$router.push('/users/history')"
-          ><i class="iconfont icon-gongneng"></i>访客记录</el-menu-item
-        >
-      </el-submenu>
-      <el-submenu index="2">
-        <template #title>
-          <i class="iconfont icon-caidan"></i>
-          <span>用户管理</span>
-        </template>
-        <el-menu-item index="2-1" @click="$router.push('/users')"
-          ><i class="iconfont icon-gongneng"></i>用户列表</el-menu-item
-        >
-        <el-menu-item index="2-2" @click="$router.push('/users/create')"
-          ><i class="iconfont icon-gongneng"></i>创建用户</el-menu-item
-        >
-      </el-submenu>
-      <el-submenu index="3">
-        <template #title>
-          <i class="iconfont icon-caidan"></i>
-          <span>分类管理</span>
-        </template>
-        <el-menu-item index="2-1" @click="$router.push('/cates')"
-          ><i class="iconfont icon-gongneng"></i>分类列表</el-menu-item
-        >
+          <i class="iconfont icon-gongneng"></i>
+          {{ sonItem.auth_name }}
+        </el-menu-item>
       </el-submenu>
     </el-menu>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex"
 export default {
+  props: {
+    menuWidth: { type: String },
+    isCollapse: { type: Boolean }
+  },
   data() {
-    return {
-      isCollapse: false,
-      menuWidth: "200px",
-      menuIcon: "el-icon-s-fold"
-    }
+    return {}
+  },
+  computed: {
+    ...mapState({
+      menu: (state) => state.auth.menu
+    })
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -74,7 +66,7 @@ export default {
   max-width: 200px;
   height: 100%;
   background-color: #263445;
-  transition: all 0.28s;
+  transition: all 0.3s;
 
   .el-menu {
     border: 0;

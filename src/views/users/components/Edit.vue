@@ -8,6 +8,7 @@
     <czp-form
       width="100%"
       :formConfig="formConfig"
+      :row="data.row"
       :formBtns="formBtns"
       @submit="getFormDataFn"
     ></czp-form>
@@ -21,30 +22,28 @@
 </template>
 
 <script>
+import { putUsersApi } from "@/api/users"
 export default {
   props: {
     width: { type: String, default: "50%" },
     //dialogVisible,title
-    data: { type: Object, default: null }
+    data: { type: Object, default: null },
+    getData: Function
   },
   data() {
     return {
       formConfig: [
         {
           label: "用户名",
-          field: "name",
+          field: "username",
           type: "text",
-          rules: [
-            { required: true, message: "不能为空", trigger: "blur" },
-            { min: 3, max: 6, message: "长度在 3 到 6 个字符", trigger: "blur" }
-          ]
+          rules: [{ required: true, message: "不能为空", trigger: "blur" }]
         },
         {
           label: "手机号",
           field: "mobile",
           type: "text",
           rules: [
-            { required: true, message: "不能为空", trigger: "blur" },
             {
               validator: (rule, value, callback) => {
                 if (!/^1\d{10}$/.test(value)) return callback("格式有误")
@@ -58,28 +57,29 @@ export default {
           label: "冻结状态",
           field: "state",
           type: "select",
+          disabled: "true",
           payload: [
-            { label: "正常", value: true },
-            { label: "冻结", value: false }
+            { label: "正常", value: "1" },
+            { label: "冻结", value: "0" }
           ],
           rules: []
         },
         {
           label: "密保问题",
-          field: "question",
+          field: "passwd_question",
           type: "select",
           payload: [
             { label: "父亲的名字", value: "父亲的名字" },
             { label: "母亲的名字", value: "母亲的名字" },
             { label: "大学学校的名字", value: "大学学校的名字" }
-          ],
-          rules: [{ required: true, message: "不能为空", trigger: "blur" }]
+          ]
+          // rules: [{ required: true, message: "不能为空", trigger: "blur" }]
         },
         {
           label: "密保答案",
-          field: "anwser",
-          type: "text",
-          rules: [{ required: true, message: "不能为空", trigger: "blur" }]
+          field: "passwd_answer",
+          type: "text"
+          // rules: [{ required: true, message: "不能为空", trigger: "blur" }]
         }
       ],
       formBtns: [
@@ -92,8 +92,16 @@ export default {
     handleClose() {
       this.$emit("close")
     },
-    getFormDataFn(data) {
-      console.log(data)
+    getFormDataFn(formData) {
+      formData.user_id = this.data.row.user_id
+      formData.question = formData.passwd_question
+      formData.answer = formData.passwd_answer
+      putUsersApi(formData).then((res) => {
+        this.createNotify(res, 200, () => {
+          this.getData()
+          this.handleClose()
+        })
+      })
     }
   }
 }

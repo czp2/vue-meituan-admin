@@ -1,6 +1,11 @@
 <template>
   <div class="map">
-    <input style="width: 200px; padding: 3px 4px" type="text" id="place" />
+    <input
+      style="width: 200px; padding: 3px 4px"
+      type="text"
+      id="place"
+      v-model="address"
+    />
     {{ location.lat }},{{ location.lng }} <br /><br />
 
     <div id="container" style="width: 100%; height: 400px"></div>
@@ -16,6 +21,7 @@
 export default {
   data() {
     return {
+      address: "",
       location: {}
     }
   },

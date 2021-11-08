@@ -19,10 +19,7 @@ export default {
           width: "",
           field: "username",
           type: "text",
-          rules: [
-            { required: true, message: "不能为空", trigger: "blur" },
-            { min: 3, max: 6, message: "长度在 3 到 6 个字符", trigger: "blur" }
-          ]
+          rules: [{ required: true, message: "不能为空", trigger: "blur" }]
         },
         {
           label: "密码",

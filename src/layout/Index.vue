@@ -1,11 +1,22 @@
 <template>
   <div id="admin">
     <!-- <h1>Hello</h1> -->
-    <Menu></Menu>
+    <Menu :isCollapse="isCollapse" :menuWidth="menuWidth"></Menu>
     <div id="main">
-      <Top></Top>
+      <Top
+        :isCollapse="isCollapse"
+        @menuChange="
+          menuWidth = isCollapse ? '200px' : '64px'
+          isCollapse = !isCollapse
+        "
+      ></Top>
       <div id="content">
-        <router-view></router-view>
+        <transition enter-active-class="animated fadeInRight">
+          <keep-alive>
+            <router-view v-if="$route.meta.keep_alive"></router-view>
+          </keep-alive>
+          <router-view v-if="!$route.meta.keep_alive"></router-view>
+        </transition>
       </div>
     </div>
   </div>
@@ -19,7 +30,10 @@ export default {
     Top
   },
   data() {
-    return {}
+    return {
+      isCollapse: false,
+      menuWidth: "200px"
+    }
   },
   methods: {}
 }
@@ -43,6 +57,7 @@ export default {
       flex: 1;
       margin-top: 20px;
       width: 96%;
+      overflow-x: hidden;
       overflow-y: auto;
       align-self: center;
     }
